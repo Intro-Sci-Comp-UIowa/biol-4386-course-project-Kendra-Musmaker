@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pandas as pd
 import math
 import matplotlib.pyplot as plt
@@ -9,6 +7,7 @@ import numpy as np
 ###PARAMS###
 DF_PATH = '/content/data_for_comp_sci.csv'
 OUTPUT_F_NAME = 'expt_1_summary.csv'
+SHOW_FIG = False
 ###END_PARAMS###
 
 def df_analysis(df_path):
@@ -90,20 +89,12 @@ def df_analysis(df_path):
 
   return(df_summary, df)
 
-def plot_errorbars(arg, **kws):
-    np.random.seed(sum(map(ord, "error_bars")))
-    x = np.random.normal(0, 1, 100)
-    f, axs = plt.subplots(2, figsize=(7, 2), sharex=True, layout="tight")
-    sns.pointplot(x=x, errorbar=arg, **kws, capsize=.3, ax=axs[0])
-    sns.stripplot(x=x, jitter=.3, ax=axs[1])
-
-def plot_fig(df_summary, df, output_f_name, fig_f_name="plot_telomer.png"):
+def plot_fig(df_summary, df, output_f_name, fig_f_name="plot_telomer.png",show=False):
   #creating a barplot of total frequency for each genotype with error bars being our 95% CI
   sns.set(style="whitegrid")
   ax = sns.barplot(data=df_summary, x='Genotype', y='Frequency (10^10)', errcolor='k', errwidth=10, errorbar=('ci', 95))
   x_coords = [p.get_x() + 0.50 * p.get_width() for p in ax.patches]
   y_coords = [p.get_height() - 6000 for p in ax.patches]
-  #plot_errorbars(lambda x: (x.min(), x.max()))
   ax.errorbar(x=x_coords, y=y_coords, yerr=df_summary["error"], fmt="none", c="k")
   ax.set(ylim=(0,2000000))
   #plotting individual frequencies on top of the bar graph of overall frequencies
@@ -111,7 +102,9 @@ def plot_fig(df_summary, df, output_f_name, fig_f_name="plot_telomer.png"):
 
   plt.savefig(fig_f_name, dpi=300)
   print(f"Saved figure as {fig_f_name}")
-  plt.show()
+
+  if show:
+    plt.show()
 
   df_summary.to_csv(output_f_name, sep='\t')
 
@@ -121,4 +114,4 @@ if __name__ == "__main__":
   df_path = DF_PATH
   output_f_name = OUTPUT_F_NAME
   df_summary, df = df_analysis(df_path)
-  plot_fig(df_summary, df, output_f_name)
+  plot_fig(df_summary, df, output_f_name, show=SHOW_FIG)
