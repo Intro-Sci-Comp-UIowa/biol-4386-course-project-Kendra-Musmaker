@@ -5,8 +5,9 @@ import seaborn as sns
 import numpy as np
 
 ###PARAMS###
-DF_PATH = '/content/data_for_comp_sci.csv'
+DF_PATH = '../Data/data_for_comp_sci.csv'
 OUTPUT_F_NAME = 'expt_1_summary.csv'
+OUTPUT_FIG_NAME = 'plot_telomer.png'
 SHOW_FIG = False
 ###END_PARAMS###
 
@@ -114,4 +115,4 @@ if __name__ == "__main__":
   df_path = DF_PATH
   output_f_name = OUTPUT_F_NAME
   df_summary, df = df_analysis(df_path)
-  plot_fig(df_summary, df, output_f_name, show=SHOW_FIG)
+  plot_fig(df_summary, df, output_f_name, fig_f_name=OUTPUT_FIG_NAME, show=SHOW_FIG)
